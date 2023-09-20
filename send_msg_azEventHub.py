@@ -1,7 +1,6 @@
 import asyncio
 import json
 import datetime
-import time
 import random
 
 from azure.eventhub import EventData
@@ -23,8 +22,7 @@ async def run():
         async with producer:
             # Create a batch.
             event_data_batch = await producer.create_batch()
-
-
+            
             sample_data = {
                 "id": random.randint(0, 2),
                 "timestamp": str(datetime.datetime.utcnow()),
@@ -32,7 +30,7 @@ async def run():
                 "value02": random.randint(70, 100),
                 "value03": random.randint(70, 100),
             }
-
+            
             s = json.dumps(sample_data, ensure_ascii=False)
             # Add events to the batch.
             event_data_batch.add(EventData(s))
@@ -40,7 +38,7 @@ async def run():
             # Send the batch of events to the event hub.
             await producer.send_batch(event_data_batch)
             print("Sending Data:", s)
-#---- End of Function ----
+# End of Function
 
 loop = asyncio.get_event_loop()
 
